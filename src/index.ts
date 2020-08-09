@@ -16,8 +16,13 @@ function readPreviousChar(fd: number, stats, ccc: number) {
  * @param filepath Absolute/Relative path to the file.
  * @param nlines Number of maximum lines to read.
  * @param encoding Character encoding to be used for the buffer.
+ * Use "buffer" to return a buffer, or a regular
+ * BufferEncoding enum to return an encoded string.
  */
-export async function readLastLines(filepath: string, nlines: number, encoding: BufferEncoding = "utf8") {
+export function readLastLines(
+	filepath: string,
+	nlines: number
+) {
 	const fp = relative(filepath)
 
 	if (!fs.existsSync(fp))
@@ -45,7 +50,5 @@ export async function readLastLines(filepath: string, nlines: number, encoding: 
 	if (lines[0] === "\n")
 		lines = lines.slice(1)
 
-	if (encoding === "binary")
-		return Buffer.from(lines, "binary")
-	return Buffer.from(lines, "binary").toString(encoding)
+	return Buffer.from(lines, "binary")
 }
