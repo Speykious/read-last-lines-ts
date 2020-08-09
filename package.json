@@ -5,5 +5,15 @@
   "main": "lib/index.js",
   "repository": "https://github.com/Speykious/read-last-lines-ts",
   "author": "Speykious",
+  "keywords": [
+    "read",
+    "last",
+    "lines",
+    "file",
+    "typescript"
+  ],
+  "files": [
+    "lib"
+  ],
   "license": "MIT"
 }
