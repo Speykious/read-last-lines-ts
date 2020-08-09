@@ -9,7 +9,7 @@
 		"sourceMap": true,
 		"declaration": true,
 
-		"types": ["node"],
+		"types": ["node", "jest"],
 		"typeRoots": ["node_modules/@types", "true"]
 	},
 	"ts-node": {
