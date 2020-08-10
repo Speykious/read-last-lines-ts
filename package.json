@@ -14,7 +14,9 @@
     "typescript",
     "fast"
   ],
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest --config jestconfig.json"
