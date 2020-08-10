@@ -21,6 +21,8 @@ test(`Speed difference on ${samples} loop samples | small file`, async () => {
 	console.log(`Time taken (read-last-lines-ts):`, rllts_ms, "ms")
 
 	expect(rllts_ms * 5).toBeLessThan(rll_ms)
+
+	console.log(`rllts has performed ${rll_ms / rllts_ms} times faster than rll`)
 })
 
 test("Speed difference on samples loop samples | big file", async () => {
@@ -37,4 +39,6 @@ test("Speed difference on samples loop samples | big file", async () => {
 	console.log(`Time taken (read-last-lines-ts):`, rllts_ms, "ms")
 
 	expect(rllts_ms * 3).toBeLessThan(rll_ms)
+
+	console.log(`rllts has performed ${rll_ms / rllts_ms} times faster than rll`)
 })
