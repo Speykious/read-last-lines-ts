@@ -2,6 +2,7 @@ import { readLastLines as rll } from "../lib/index"
 import { read as rllo } from "read-last-lines"
 import { resolve } from "path"
 import { dim, bold, rgb24 } from "ansi-colors-ts"
+import { format } from "util"
 
 const utf8_txt = resolve(__dirname, "./utf8.txt")
 const dump_txt = resolve(__dirname, "./dump.txt")
@@ -25,7 +26,7 @@ test(`Speed difference on ${samples} loop samples | small file`, async () => {
 																													// Nested interpolation <_<
 console.log(`Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
 Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
-rllts has performed ${bold(String(rll_ms / rllts_ms))} times faster than rll ${dim("(small file, all lines)")}`)
+rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim("(small file, all lines)")}`)
 })
 
 test(`Speed difference on ${samples} loop samples | big file`, async () => {
@@ -43,7 +44,7 @@ test(`Speed difference on ${samples} loop samples | big file`, async () => {
 
 console.log(`Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
 Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
-rllts has performed ${bold(String(rll_ms / rllts_ms))} times faster than rll ${dim("(big file, few lines)")}`)
+rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim("(big file, few lines)")}`)
 })
 
 test(`Speed difference on ${samples / 10} loop big samples | big file`, async () => {
@@ -61,5 +62,5 @@ test(`Speed difference on ${samples / 10} loop big samples | big file`, async ()
 
 console.log(`Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
 Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
-rllts has performed ${bold(String(rll_ms / rllts_ms))} times faster than rll ${dim("(big file, all lines)")}`)
+rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim("(big file, all lines)")}`)
 })
