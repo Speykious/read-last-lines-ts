@@ -14,9 +14,7 @@
     "typescript",
     "fast"
   ],
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "build": "tsc",
     "test": "jest --config jestconfig.json"
@@ -25,6 +23,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.9",
     "@types/node": "^14.0.27",
+    "ansi-colors-ts": "^0.0.1",
     "faker": "^4.1.0",
     "jest": "^26.2.2",
     "read-last-lines": "^1.7.2",
