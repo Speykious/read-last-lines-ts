@@ -8,11 +8,9 @@ function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 
 /**
  * Reads the last lines of a file.
- * @param filepath Absolute/Relative path to the file.
+ * @param filepath Absolute path to the file.
  * @param nlines Number of maximum lines to read.
- * @param encoding Character encoding to be used for the buffer.
- * Use "buffer" to return a buffer, or a regular
- * BufferEncoding enum to return an encoded string.
+ * @returns A buffer containing the lines that have been read.
  */
 export function readLastLines(
 	filepath: string,
@@ -46,6 +44,11 @@ export function readLastLines(
 	return Buffer.from(lines, "binary")
 }
 
+/**
+ * Reads the last lines of a file and encodes them into a string.
+ * @param encoding How you want to encode the string from the buffer.
+ * @returns An encoded string containing the lines that have been read.
+ */
 export const readLastLinesEnc = (encoding: BufferEncoding) => (
 	filepath: string, nlines: number
 ) => readLastLines(filepath, nlines).toString(encoding)
