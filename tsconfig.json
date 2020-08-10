@@ -8,6 +8,7 @@
 		// "inlineSourceMap": true,
 		"sourceMap": true,
 		"declaration": true,
+		"allowJs": true,
 
 		"types": ["node", "jest"],
 		"typeRoots": ["node_modules/@types", "true"]
