@@ -1,10 +1,10 @@
-# read-last-lines-ts
+# Read Last Lines (TypeScript)
 
-Read the last lines of a file, written in TypeScript for intellisense, inspired
+Read the last lines of a file, written in TypeScript for intellisense, rewritten
 from the current [read-last-lines](https://github.com/alexbbt/read-last-lines)
 package by [Alexander Bell-Towne](https://github.com/alexbbt).
 
-Copyright (c) 2020 [Speykious](https://github.com/Speykious)
+Copyright © 2020 [Speykious](https://github.com/Speykious)
 
 ***
 ## How to install
@@ -47,3 +47,27 @@ const lines = readLastLinesEnc("utf8")("/absolute/path/to/file", 10)
 console.log(lines)
 ```
 You can code in JavaScript or in TypeScript, whatever is in your best interest.
+
+***
+## Miscellaneous
+This `read-last-lines-ts` package is always at least
+**6 times faster** than the `read-last-lines` package,
+as those speed tests indicate:
+
+[![Test screenshot](resources/screenshot-test.png)](resources/screenshot-test.png)
+
+When I looked at the code for the `read` function of the `read-last-lines` package,
+there was a lot of things for which I quite didn't understand the motivation behind.
+
+There was absolutely no use of any kind of for loop or while loop, nor any use of async/await.
+Maybe it was for some kind of backwards-compatibility?
+
+Also, why did they use a custom file system library `mz/fs` instead of the native `fs`?
+Was there no `fs` back then?
+
+They also used a *ton* of async behavior on all kinds of
+places where it wasn't necessary. Maybe that was a factor for how slow it is compared
+to this modern sync version.
+
+If someone wants to explain any of these things to me, or point out a bug / problem,
+or request a feature, don't hesitate to raise an issue on the [github repo](https://github.com/Speykious/read-last-lines-ts). 😁
