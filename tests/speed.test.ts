@@ -25,7 +25,7 @@ Time taken (read-last-lines-ts): ${rllts_ms} ms
 rllts has performed ${rll_ms / rllts_ms} times faster than rll (small file)`)
 })
 
-test("Speed difference on samples loop samples | big file", async () => {
+test(`Speed difference on ${samples} loop samples | big file`, async () => {
 	const start_rll = new Date()
 	for (let i = 0; i < samples; i++)
 		await rllo(dump_txt, 10)
@@ -34,6 +34,24 @@ test("Speed difference on samples loop samples | big file", async () => {
 	const start_rllts = new Date()
 	for (let i = 0; i < samples; i++)
 		rll(dump_txt, 10)
+	const rllts_ms = new Date().getTime() - start_rllts.getTime()
+
+	expect(rllts_ms * 3).toBeLessThan(rll_ms)
+
+console.log(`Time taken    (read-last-lines): ${rll_ms} ms
+Time taken (read-last-lines-ts): ${rllts_ms} ms
+rllts has performed ${rll_ms / rllts_ms} times faster than rll (big file)`)
+})
+
+test(`Speed difference on ${samples / 10} loop big samples | big file`, async () => {
+	const start_rll = new Date()
+	for (let i = 0; i < samples / 10; i++)
+		await rllo(dump_txt, 300)
+	const rll_ms = new Date().getTime() - start_rll.getTime()
+
+	const start_rllts = new Date()
+	for (let i = 0; i < samples / 10; i++)
+		rll(dump_txt, 300)
 	const rllts_ms = new Date().getTime() - start_rllts.getTime()
 
 	expect(rllts_ms * 3).toBeLessThan(rll_ms)
