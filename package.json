@@ -1,7 +1,7 @@
 {
   "name": "read-last-lines-ts",
   "version": "1.0.0",
-  "description": "Read the last lines of a file, written in TypeScript for intellisense",
+  "description": "Fastly read the last lines of a file, written in TypeScript for intellisense",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "https://github.com/Speykious/read-last-lines-ts",
