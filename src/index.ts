@@ -1,11 +1,6 @@
 import * as fs from "fs"
-import { resolve } from "path";
 
-export const relative = (...args: string[]) => resolve(__dirname, ...args)
-
-
-
-function readPreviousChar(fd: number, stats, ccc: number) {
+function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 	const buffer = Buffer.alloc(1)
 	fs.readSync(fd, buffer, 0, 1, stats.size - 1 - ccc)
 	return String.fromCharCode(buffer[0])
@@ -23,14 +18,12 @@ export function readLastLines(
 	filepath: string,
 	nlines: number
 ) {
-	const fp = relative(filepath)
-
-	if (!fs.existsSync(fp))
+	if (!fs.existsSync(filepath))
 		throw new Error(`File '${filepath}' doesn't exist :(`)
 	
 	// Open the file before doing anything else
-	const fd = fs.openSync(fp, "r")
-	const fstats = fs.statSync(fp)
+	const fd = fs.openSync(filepath, "r")
+	const fstats = fs.statSync(filepath)
 	
 	let ichars = 0
 	let ilines = 0
