@@ -52,3 +52,7 @@ export function readLastLines(
 
 	return Buffer.from(lines, "binary")
 }
+
+export const readLastLinesEnc = (encoding: BufferEncoding) => (
+	filepath: string, nlines: number
+) => readLastLines(filepath, nlines).toString(encoding)
