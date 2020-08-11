@@ -57,7 +57,7 @@ as those speed tests indicate:
 [![Test screenshot](resources/screenshot-test.png)](resources/screenshot-test.png)
 
 When I looked at the code for the `read` function of the `read-last-lines` package,
-there was a lot of things for which I quite didn't understand the motivation behind.
+there were a lot of things for which I quite didn't understand the motivation behind.
 
 There was absolutely no use of any kind of for loop or while loop, nor any use of async/await.
 Maybe it was for some kind of backwards-compatibility?
