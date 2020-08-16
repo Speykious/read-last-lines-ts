@@ -6,7 +6,6 @@
   "types": "lib/index.d.ts",
   "repository": "https://github.com/Speykious/read-last-lines-ts",
   "author": "Speykious",
-  "maintainers": ["Speykious"],
   "keywords": [
     "read",
     "last",
