@@ -47,3 +47,6 @@ test(`Speed difference | large file, few lines`,
 test(`Speed difference | large file, lots of lines`,
 	() => abstract("large file, lots of lines", bible_txt, 10, 300),
 	10000)
+test(`Speed difference | large file, lots of lines`,
+	() => abstract("large file, LOTS of lines", bible_txt, 1, 3000),
+	10000)
