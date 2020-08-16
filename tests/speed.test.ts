@@ -24,7 +24,7 @@ const abstract = async (detail: string, file: string, samples: number, lines: nu
 		rll(file, lines)
 	const rllts_ms = new Date().getTime() - start_rllts.getTime()
 
-	expect(rllts_ms * 5).toBeLessThan(rll_ms)
+	expect(rllts_ms * 6).toBeLessThan(rll_ms)
 																													// Nested interpolation <_<
 console.log(`Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
 Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
