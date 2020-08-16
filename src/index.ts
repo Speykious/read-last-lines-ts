@@ -4,6 +4,7 @@ import { resolve } from "path"
 /**
  * Gets the path to the directory of the caller on a given layer.
  * @param layer The layer where the caller is on the stack.
+ * @returns The directory path of the deduced caller.
  */
 function getCallerDirPath(layer: number) {
 	const stack = new Error().stack.split('\n')
@@ -16,9 +17,10 @@ function getCallerDirPath(layer: number) {
 }
 
 /**
- * Handles the absolute/relative path
- * @param layer The layer of stack call to pick from
- * @param path The absolute/relative path to handle
+ * Handles the absolute/relative path.
+ * @param layer The layer of stack call to pick from.
+ * @param path The absolute/relative path to handle.
+ * @returns The path relative to the specified layer.
  */
 function handlePath(layer: number, path: string) {
 	// Handling absolute paths
@@ -33,7 +35,11 @@ function handlePath(layer: number, path: string) {
 
 /**
  * Reads the previous character of a file, if the
- * function's name doesn't already explain enough
+ * function's name doesn't already explain enough.
+ * @param fd The file descriptor to read with.
+ * @param stats The stats of the file which are needed.
+ * @param ccc The current char count to know which char to read.
+ * @returns The read previous character.
  */
 function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 	const buffer = Buffer.alloc(1)
