@@ -7,13 +7,24 @@ package by [Alexander Bell-Towne](https://github.com/alexbbt).
 Copyright © 2020 [Speykious](https://github.com/Speykious)
 
 ***
+Summary
+- [Read Last Lines (TypeScript)](#read-last-lines-typescript)
+	- [How to install](#how-to-install)
+	- [How to use](#how-to-use)
+		- [CommonJS syntax](#commonjs-syntax)
+		- [ESX syntax](#esx-syntax)
+	- [Miscellaneous](#miscellaneous)
+***
+
 ## How to install
 
 - If you use npm: `npm install read-last-lines-ts --save`
 - If you use yarn: `yarn add read-last-lines-ts`
 
-***
+
 ## How to use
+
+**New in v1.1.0:** now handles absolute *and* relative paths! 
 
 ### CommonJS syntax
 To read the last 10 lines of a file in utf8 encoding:
@@ -21,11 +32,11 @@ To read the last 10 lines of a file in utf8 encoding:
 const { readLastLines, readLastLinesEnc } = require("read-last-lines-ts")
 
 // You get a Buffer from readLastLines
-const buffer = readLastLines("/absolute/path/to/file", 10)
+const buffer = readLastLines("path/to/file", 10)
 console.log(buffer.toString("utf8"))
 
 // Alternatively, you can use this curried function for builtin string conversion
-const lines = readLastLinesEnc("utf8")("/absolute/path/to/file", 10)
+const lines = readLastLinesEnc("utf8")("path/to/file", 10)
 console.log(lines)
 ```
 You can choose any encoding from the `BufferEncoding` enum from `fs`.
@@ -39,16 +50,15 @@ Same example:
 ```js
 import { readLastLines, readLastLinesEnc } from "read-last-lines-ts"
 
-const buffer = readLastLines("/absolute/path/to/file", 10)
+const buffer = readLastLines("path/to/file", 10)
 console.log(buffer.toString("utf8"))
 
 // Or:
-const lines = readLastLinesEnc("utf8")("/absolute/path/to/file", 10)
+const lines = readLastLinesEnc("utf8")("path/to/file", 10)
 console.log(lines)
 ```
 You can code in JavaScript or in TypeScript, whatever is in your best interest.
 
-***
 ## Miscellaneous
 This `read-last-lines-ts` package is always at least
 **6 times faster** than the `read-last-lines` package,
