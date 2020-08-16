@@ -1,10 +1,10 @@
 import { readLastLinesEnc as rlle, readLastLines as rll } from "../lib/index"
-import { resolve } from "path"
+// import { resolve } from "path"
 
-const utf8_txt               = resolve(__dirname, "./utf8.txt")
-const numbered_txt           = resolve(__dirname, "./numbered.txt")
-const numbered_ntnl_txt      = resolve(__dirname, "./numbered-ntnl.txt")
-const i_dont_exist_sorry_lol = resolve(__dirname, "./i-dont-exist-sorry-lol")
+const utf8_txt               = "./utf8.txt"
+const numbered_txt           = "./numbered.txt"
+const numbered_ntnl_txt      = "./numbered-ntnl.txt"
+const i_dont_exist_sorry_lol = "./i-dont-exist-sorry-lol"
 
 test("Get all lines when asked for more than the file has", () => {
 	const allLines = rlle("utf8")(numbered_txt, 20)
