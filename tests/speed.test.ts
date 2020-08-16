@@ -2,7 +2,6 @@ import { readLastLines as rll } from "../lib/index"
 import { read as rllo } from "read-last-lines"
 import { resolve } from "path"
 import { dim, bold, rgb24 } from "ansi-colors-ts"
-import { format } from "util"
 
 // Using absolute paths because the read-last-lines
 // package doesn't handle relative paths the same way
