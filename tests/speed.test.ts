@@ -4,6 +4,8 @@ import { resolve } from "path"
 import { dim, bold, rgb24 } from "ansi-colors-ts"
 import { format } from "util"
 
+// Using absolute paths because the read-last-lines
+// package doesn't handle relative paths the same way
 const utf8_txt = resolve(__dirname, "./utf8.txt")
 const dump_txt = resolve(__dirname, "./dump.txt")
 const bible_txt = resolve(__dirname, "./bible.txt")
