@@ -1,29 +1,40 @@
 import * as fs from "fs"
 import { resolve } from "path"
 
-/** Gets the path to the directory of the caller on a given layer.
- * @param layer The layer where the caller is on the stack. */
+/**
+ * Gets the path to the directory of the caller on a given layer.
+ * @param layer The layer where the caller is on the stack.
+ */
 function getCallerDirPath(layer: number) {
-	const stackl = new Error().stack.split('\n')[layer]
+	const stack = new Error().stack.split('\n')
+	//console.log(stack)
+	const stackl = stack[layer + 2]
 	return stackl.slice(
 		stackl.indexOf('/'),
 		stackl.lastIndexOf('/')+1
 	)
 }
 
-/** Handles the absolute/relative path
+/**
+ * Handles the absolute/relative path
  * @param layer The layer of stack call to pick from
- * @param path The absolute/relative path to handle */
+ * @param path The absolute/relative path to handle
+ */
 function handlePath(layer: number, path: string) {
+	// Handling absolute paths
 	if (path.length && path[0] === "/")
 		return path
 	// The '+ 1' is here to make the layer relative to the
 	// handlePath call and not the getCallerDirPath call
-	resolve(getCallerDirPath(layer + 1), path)
+	const gcdp = getCallerDirPath(layer + 1)
+	//console.log("handlePath returns with path:", gcdp)
+	return resolve(gcdp, path)
 }
 
-/** Reads the previous character of a file, if the
- * function's name doesn't already explain enough */
+/**
+ * Reads the previous character of a file, if the
+ * function's name doesn't already explain enough
+ */
 function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 	const buffer = Buffer.alloc(1)
 	fs.readSync(fd, buffer, 0, 1, stats.size - 1 - ccc)
@@ -32,13 +43,15 @@ function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 
 /**
  * Reads the last lines of a file.
- * @param fp Absolute path to the file.
+ * @param fp Absolute/relative path to the file.
  * @param nlines Number of maximum lines to read.
+ * @param pathlayer The layer to consider when handling paths.
  * @returns A buffer containing the lines that have been read.
  */
-export function readLastLines(filepath: string, nlines: number) {
+function __rll(filepath: string, nlines: number, pathlayer: number) {
 	// 1 layer above to make it relative to the readLastLines call
-	const fp = handlePath(1, filepath)
+	const fp = handlePath(pathlayer + 1, filepath)
+	//console.log("resuling filepath:", fp)
 
 	if (!fs.existsSync(fp))
 		throw new Error(`File '${fp}' doesn't exist :(`)
@@ -69,10 +82,19 @@ export function readLastLines(filepath: string, nlines: number) {
 }
 
 /**
+ * Reads the last lines of a file.
+ * @param fp Absolute/relative path to the file.
+ * @param nlines Number of maximum lines to read.
+ * @returns A buffer containing the lines that have been read.
+ */
+export const readLastLines = (filepath: string, nlines: number) =>
+	__rll(filepath, nlines, 1)
+
+/**
  * Reads the last lines of a file and encodes them into a string.
  * @param encoding How you want to encode the string from the buffer.
  * @returns An encoded string containing the lines that have been read.
  */
 export const readLastLinesEnc = (encoding: BufferEncoding) => (
 	filepath: string, nlines: number
-) => readLastLines(filepath, nlines).toString(encoding)
+) => __rll(filepath, nlines, 1).toString(encoding)
