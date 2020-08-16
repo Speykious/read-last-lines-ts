@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json",
+    "all": "yarn build && yarn test"
   },
   "license": "MIT",
   "devDependencies": {
