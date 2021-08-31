@@ -10,7 +10,7 @@
 		"declaration": true,
 		"allowJs": true,
 
-		"types": ["node", "jest"],
+		"types": ["node"],
 		"typeRoots": ["node_modules/@types", "true"]
 	},
 	"ts-node": {
