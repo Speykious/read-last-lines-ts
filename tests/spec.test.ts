@@ -4,6 +4,12 @@ import { resolve } from "path"
 
 const rllu = rlle("utf8")
 
+function logString(name: string, s: string) {
+  console.log(`>=> ${name} >=>`)
+  console.log([s])
+  console.log(`<=< ${name} <=<`)
+}
+
 describe("It works", () => {
   it("Get all lines when asked for more than the file has", () => {
     const allLines = rllu("./numbered.txt", 20)
@@ -51,5 +57,10 @@ describe("It works", () => {
     expect(lines).to.include("português")
     expect(lines).to.include("français")
     expect(lines).to.include("日本語")
+  })
+
+  it("Reading the entire chinese bible for no reason", () => {
+    const allLines = rllu("./chinese-bible.txt", 50000)
+    expect(allLines.split(/\n/).length).to.equal(31032)
   })
 })
