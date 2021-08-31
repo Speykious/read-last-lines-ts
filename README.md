@@ -18,13 +18,15 @@ Summary
 
 ## How to install
 
-- If you use npm: `npm install read-last-lines-ts --save`
-- If you use yarn: `yarn add read-last-lines-ts`
+- If you use `npm`: `npm install read-last-lines-ts --save`
+- If you use `yarn`: `yarn add read-last-lines-ts`
 
 
 ## How to use
 
-**New in v1.1.0:** now handles absolute *and* relative paths! 
+`read-last-lines-ts` supports absolute and relative paths since version **1.1.0**.
+
+**New in v1.2.0**: *literally **1000** times faster!!!*
 
 ### CommonJS syntax
 To read the last 10 lines of a file in utf8 encoding:
@@ -35,7 +37,12 @@ const { readLastLines, readLastLinesEnc } = require("read-last-lines-ts")
 const buffer = readLastLines("path/to/file", 10)
 console.log(buffer.toString("utf8"))
 
+// You can specify a buffer length (default is 4096) ─ example: 50 chars at a time!
+// The bufferLength parameter is the length of the internal buffer used for reading
+const buffer = readLastLines("path/to/file", 10, 50)
+
 // Alternatively, you can use this curried function for builtin string conversion
+// (PS: the optional bufferLength parameter also works here)
 const lines = readLastLinesEnc("utf8")("path/to/file", 10)
 console.log(lines)
 ```
@@ -53,16 +60,19 @@ import { readLastLines, readLastLinesEnc } from "read-last-lines-ts"
 const buffer = readLastLines("path/to/file", 10)
 console.log(buffer.toString("utf8"))
 
+// Optional bufferLength argument
+const buffer = readLastLines("path/to/file", 10, 50)
+
 // Or:
 const lines = readLastLinesEnc("utf8")("path/to/file", 10)
 console.log(lines)
 ```
-You can code in JavaScript or in TypeScript, whatever is in your best interest.
+You can code in JavaScript, TypeScript, CoffeeScript, whatever is in your best interest.
 
 ## Miscellaneous
-This `read-last-lines-ts` package is always at least
-**6 times faster** than the `read-last-lines` package,
-as those speed tests indicate:
+The `read-last-lines-ts` package is very often
+**1000s of times faster** than the `read-last-lines` package,
+as these speed tests indicate:
 
 [![Test screenshot](resources/screenshot-test.png)](resources/screenshot-test.png)
 
