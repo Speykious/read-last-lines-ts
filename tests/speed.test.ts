@@ -2,6 +2,7 @@ import { readLastLines as rll } from "../lib/index"
 import { read as rllo } from "read-last-lines"
 import { resolve } from "path"
 import { dim, bold, rgb24 } from "ansi-colors-ts"
+import { expect } from "chai"
 
 // Using absolute paths because the read-last-lines
 // package doesn't handle relative paths the same way
@@ -23,30 +24,34 @@ const abstract = async (detail: string, file: string, samples: number, lines: nu
 		rll(file, lines)
 	const rllts_ms = new Date().getTime() - start_rllts.getTime()
 
-	expect(rllts_ms * 6).toBeLessThan(rll_ms)
+	expect(rllts_ms * 6).to.be.lessThan(rll_ms)
 																													// Nested interpolation <_<
-console.log(`Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
-Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
-rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim(`(${detail})`)}`)
+console.log(`
+            Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
+            Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
+            rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim(`(${detail})`)}
+            `)
 }
 
 
-test(`Speed difference | small file`, () =>
-	abstract("small file, all lines", utf8_txt, 100, 10))
+describe("It is at least 6 times faster than read-last-lines", () => {
+  it("Speed difference | small file", () =>
+    abstract("small file, all lines", utf8_txt, 100, 10))
 
-test(`Speed difference | medium file, few lines`,
-	() => abstract("medium file, few lines", dump_txt, 100, 10),
-	10000)
-test(`Speed difference | medium file, all lines`,
-	() => abstract("medium file, all lines", dump_txt, 10, 300),
-	10000)
+  it("Speed difference | medium file, few lines",
+    () => abstract("medium file, few lines", dump_txt, 100, 10)
+  ).timeout(10000)
+  it("Speed difference | medium file, all lines",
+    () => abstract("medium file, all lines", dump_txt, 10, 300)
+  ).timeout(10000)
 
-test(`Speed difference | large file, few lines`,
-	() => abstract("large file, few lines", bible_txt, 100, 10),
-	10000)
-test(`Speed difference | large file, lots of lines`,
-	() => abstract("large file, lots of lines", bible_txt, 10, 300),
-	10000)
-test(`Speed difference | large file, lots of lines`,
-	() => abstract("large file, LOTS of lines", bible_txt, 1, 3000),
-	10000)
+  it("Speed difference | large file, few lines",
+    () => abstract("large file, few lines", bible_txt, 100, 10)
+  ).timeout(10000)
+  it("Speed difference | large file, lots of lines",
+    () => abstract("large file, lots of lines", bible_txt, 10, 300)
+  ).timeout(10000)
+  it("Speed difference | large file, lots of lines",
+    () => abstract("large file, LOTS of lines", bible_txt, 1, 3000)
+  ).timeout(10000)
+})

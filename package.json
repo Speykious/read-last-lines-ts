@@ -19,18 +19,20 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest --config jestconfig.json",
+    "test": "mocha -r ts-node/register 'tests/**/*.ts'",
     "all": "yarn build && yarn test"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^26.0.9",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^14.0.27",
     "ansi-colors-ts": "^0.0.1",
+    "chai": "^4.3.4",
     "faker": "^4.1.0",
-    "jest": "^26.2.2",
+    "mocha": "^9.1.1",
     "read-last-lines": "^1.7.2",
-    "ts-jest": "^26.1.4",
+    "ts-node": "^10.2.1",
     "typescript": "^3.9.7"
   }
 }

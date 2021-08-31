@@ -44,6 +44,7 @@ function handlePath(layer: number, path: string) {
 function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
 	const buffer = Buffer.alloc(1)
 	fs.readSync(fd, buffer, 0, 1, stats.size - 1 - ccc)
+	
 	return String.fromCharCode(buffer[0])
 }
 
