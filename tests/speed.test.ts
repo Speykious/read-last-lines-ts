@@ -20,21 +20,21 @@ const abstract = async (detail: string, file: string, samples: number, lines: nu
 	const rll_ms = new Date().getTime() - start_rll.getTime()
 
 	const start_rllts = new Date()
-	for (let i = 0; i < samples; i++)
+	for (let i = 0; i < samples * 1000; i++)
 		rll(file, lines)
-	const rllts_ms = new Date().getTime() - start_rllts.getTime()
+	const rllts_ms = (new Date().getTime() - start_rllts.getTime()) / 1000
 
-	expect(rllts_ms * 6).to.be.lessThan(rll_ms)
-																													// Nested interpolation <_<
-console.log(`
-            Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
-            Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
-            rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim(`(${detail})`)}
-            `)
+	expect(rllts_ms * 100).to.be.lessThan(rll_ms)
+  // Nested interpolation <_<
+  console.log(`
+        Time taken    (${orange("read-last-lines")}): ${orange(`${rll_ms} ms`)}
+        Time taken (${lightb("read-last-lines-ts")}): ${lightb(`${rllts_ms} ms`)}
+        rllts has performed ${bold((rll_ms / rllts_ms).toFixed(2))} times faster than rll ${dim(`(${detail})`)}
+  `)
 }
 
 
-describe("It is at least 6 times faster than read-last-lines", () => {
+describe("It is at least 100 times faster than read-last-lines", () => {
   it("Speed difference | small file", () =>
     abstract("small file, all lines", utf8_txt, 100, 10))
 

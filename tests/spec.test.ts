@@ -4,12 +4,6 @@ import { resolve } from "path"
 
 const rllu = rlle("utf8")
 
-function logString(name: string, s: string) {
-  console.log(`>=> ${name} >=>`)
-  console.log([s])
-  console.log(`<=< ${name} <=<`)
-}
-
 describe("It works", () => {
   it("Get all lines when asked for more than the file has", () => {
     const allLines = rllu("./numbered.txt", 20)

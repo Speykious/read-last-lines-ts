@@ -53,14 +53,14 @@ function handlePath(layer: number, path: string) {
  * Reads the previous character of a file, if the
  * function's name doesn't already explain enough.
  * @param fd The file descriptor to read from.
- * @param stats The stats of the file which are needed.
+ * @param fileSize The size of the file.
  * @param ccc The current char count to know which char to read (a.k.a the reverse index).
  * @param n The maximum number of characters to read.
  * @returns The read previous character.
  */
-function readPreviousChars(fd: number, stats: fs.Stats, ccc: number, n: number) {
-	const buffer = Buffer.alloc(n)
-  const ci = stats.size - ccc
+function readPreviousChars(fd: number, fileSize: number, ccc: number, buffer: Buffer): string {
+  const n = buffer.length
+  const ci = fileSize - ccc
   if (n <= ci) {
     fs.readSync(fd, buffer, 0, n, ci - n)
     return buffer.toString('binary')
@@ -78,17 +78,11 @@ function readPreviousChars(fd: number, stats: fs.Stats, ccc: number, n: number) 
  * @param bufferLength The length of the character buffer.
  * @returns A buffer containing the lines that have been read.
  */
-function __rll(filepath: string, nlines: number, pathlayer: number, bufferLength: number) {
-	// 1 layer above to make it relative to the readLastLines call
-	const fp = handlePath(pathlayer + 1, filepath)
-	//console.log("resuling filepath:", fp)
-
-	if (!fs.existsSync(fp))
-		throw new Error(`File '${fp}' doesn't exist :(`)
-	
+function __rll(fd: number, fileSize: number, nlines: number, bufferLength: number): Buffer {
 	// Open the file before doing anything else
-	const fd = fs.openSync(fp, "r")
-	const fstats = fs.statSync(fp)
+	// const fd = fs.openSync(fp, "r")
+	// const fileSize = fs.statSync(fp).size
+	const buffer = Buffer.alloc(bufferLength)
 	
 	let ichars = 0
 	let ilines = 0
@@ -97,7 +91,7 @@ function __rll(filepath: string, nlines: number, pathlayer: number, bufferLength
 	// Read characters backwards until it's enough
   let reading = true
 	while (true) {
-		const pchars = readPreviousChars(fd, fstats, ichars, bufferLength)
+		const pchars = readPreviousChars(fd, fileSize, ichars, buffer)
     if (pchars.length === 0) break
 
     for (let i = pchars.length - 1; i > 0; i--) {
@@ -129,6 +123,8 @@ function __rll(filepath: string, nlines: number, pathlayer: number, bufferLength
 	return Buffer.from(lines, "binary")
 }
 
+// export type AsFile = string | fs.promises.FileHandle
+
 /**
  * Reads the last lines of a file.
  * @param fp Absolute/relative path to the file.
@@ -136,8 +132,14 @@ function __rll(filepath: string, nlines: number, pathlayer: number, bufferLength
  * @param bufferLength The length of the character buffer - 4096 by default.
  * @returns A buffer containing the lines that have been read.
  */
-export const readLastLines = (filepath: string, nlines: number, bufferLength: number = 4096) =>
-	__rll(filepath, nlines, 1, bufferLength)
+export const readLastLines = (filePath: string, nlines: number, bufferLength: number = 4096) => {
+  const fp = handlePath(1, filePath)
+  if (!fs.existsSync(fp))
+    throw new Error(`File '${fp}' doesn't exist :(`)
+  const fd = fs.openSync(fp, "r")
+  const fileSize = fs.statSync(fp).size
+	return __rll(fd, fileSize, nlines, bufferLength)
+}
 
 /**
  * Reads the last lines of a file and encodes them into a string.
@@ -145,5 +147,8 @@ export const readLastLines = (filepath: string, nlines: number, bufferLength: nu
  * @returns An encoded string containing the lines that have been read.
  */
 export const readLastLinesEnc = (encoding: BufferEncoding) => (
-	filepath: string, nlines: number, bufferLength: number = 4096
-) => __rll(filepath, nlines, 1, bufferLength).toString(encoding)
+	filePath: string, nlines: number, bufferLength: number = 4096
+) => {
+  const fp = handlePath(1, filePath)
+	return readLastLines(fp, nlines, bufferLength).toString(encoding)
+}
