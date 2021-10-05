@@ -1,6 +1,7 @@
 import { expect } from "chai"
-import { readLastLinesEnc as rlle, readLastLines as rll } from "../lib/index"
+import { readLastLinesEnc as rlle, readLastLines as rll, readLastLinesFromHandle as rllfh } from "../lib/index"
 import { resolve } from "path"
+import * as fs from "fs"
 
 const rllu = rlle("utf8")
 
@@ -32,15 +33,6 @@ describe("It works", () => {
     expect(() => {
       rll("./i-dont-exist-sorry-lol", 1)
     }).to.throw(`File '${resolve(__dirname, "./i-dont-exist-sorry-lol")}' doesn't exist :(`)
-    /*
-    try {
-      rll("./i-dont-exist-sorry-lol", 1)
-    } catch (err) {
-      expect(err).to.equal(new Error(
-        `File '${resolve(__dirname, "./i-dont-exist-sorry-lol")}' doesn't exist :(`
-      ))
-    }
-    */
   })
 
   it("Reading UTF8 files", () => {
@@ -56,5 +48,12 @@ describe("It works", () => {
   it("Reading the entire chinese bible for no reason", () => {
     const allLines = rllu("./chinese-bible.txt", 50000)
     expect(allLines.split(/\n/).length).to.equal(31032)
+  })
+
+  it("FileHandle version works the same way", async () => {
+    const fileHandle = await fs.promises.open(resolve(__dirname, "./chinese-bible.txt"), 'r')
+    const allLines = (await rllfh(fileHandle, 50000)).toString()
+    expect(allLines.split(/\n/).length).to.equal(31032)
+    await fileHandle.close()
   })
 })

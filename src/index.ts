@@ -7,13 +7,13 @@ import { resolve } from "path"
  * @returns The directory path of the deduced caller.
  */
 function getCallerDirPath(layer: number) {
-	const stack = new Error().stack.split('\n')
-	//console.log(stack)
-	const stackl = stack[layer + 2]
-	return stackl.slice(
-		stackl.indexOf('/'),
-		stackl.lastIndexOf('/')+1
-	)
+  const stack = new Error().stack.split('\n')
+  //console.log(stack)
+  const stackl = stack[layer + 2]
+  return stackl.slice(
+    stackl.indexOf('/'),
+    stackl.lastIndexOf('/') + 1
+  )
 }
 
 /**
@@ -23,14 +23,14 @@ function getCallerDirPath(layer: number) {
  * @returns The path relative to the specified layer.
  */
 function handlePath(layer: number, path: string) {
-	// Handling absolute paths
-	if (path.length && path[0] === "/")
-		return path
-	// The '+ 1' is here to make the layer relative to the
-	// handlePath call and not the getCallerDirPath call
-	const gcdp = getCallerDirPath(layer + 1)
-	//console.log("handlePath returns with path:", gcdp)
-	return resolve(gcdp, path)
+  // Handling absolute paths
+  if (path.length && path[0] === "/")
+    return path
+  // The '+ 1' is here to make the layer relative to the
+  // handlePath call and not the getCallerDirPath call
+  const gcdp = getCallerDirPath(layer + 1)
+  //console.log("handlePath returns with path:", gcdp)
+  return resolve(gcdp, path)
 }
 
 
@@ -44,9 +44,9 @@ function handlePath(layer: number, path: string) {
 //  * @returns The read previous character.
 //  */
 // function readPreviousChar(fd: number, stats: fs.Stats, ccc: number) {
-// 	const buffer = Buffer.alloc(1)
-// 	fs.readSync(fd, buffer, 0, 1, stats.size - 1 - ccc)
-// 	return buffer.toString()
+//   const buffer = Buffer.alloc(1)
+//   fs.readSync(fd, buffer, 0, 1, stats.size - 1 - ccc)
+//   return buffer.toString()
 // }
 
 /**
@@ -79,19 +79,19 @@ function readPreviousChars(fd: number, fileSize: number, ccc: number, buffer: Bu
  * @returns A buffer containing the lines that have been read.
  */
 function __rll(fd: number, fileSize: number, nlines: number, bufferLength: number): Buffer {
-	// Open the file before doing anything else
-	// const fd = fs.openSync(fp, "r")
-	// const fileSize = fs.statSync(fp).size
-	const buffer = Buffer.alloc(bufferLength)
-	
-	let ichars = 0
-	let ilines = 0
-	let lines = ""
+  // Open the file before doing anything else
+  // const fd = fs.openSync(fp, "r")
+  // const fileSize = fs.statSync(fp).size
+  const buffer = Buffer.alloc(bufferLength)
 
-	// Read characters backwards until it's enough
+  let ichars = 0
+  let ilines = 0
+  let lines = ""
+
+  // Read characters backwards until it's enough
   let reading = true
-	while (true) {
-		const pchars = readPreviousChars(fd, fileSize, ichars, buffer)
+  while (true) {
+    const pchars = readPreviousChars(fd, fileSize, ichars, buffer)
     if (pchars.length === 0) break
 
     for (let i = pchars.length - 1; i > 0; i--) {
@@ -112,18 +112,16 @@ function __rll(fd: number, fileSize: number, nlines: number, bufferLength: numbe
     if (!reading) break
     ichars += pchars.length
     lines = pchars + lines
-	}
+  }
 
-	fs.closeSync(fd)
+  fs.closeSync(fd)
 
-	// Do not include the first newline character when there is one
-	if (lines[0] === "\n")
-		lines = lines.slice(1)
+  // Do not include the first newline character when there is one
+  if (lines[0] === "\n")
+    lines = lines.slice(1)
 
-	return Buffer.from(lines, "binary")
+  return Buffer.from(lines, "binary")
 }
-
-// export type AsFile = string | fs.promises.FileHandle
 
 /**
  * Reads the last lines of a file.
@@ -132,13 +130,19 @@ function __rll(fd: number, fileSize: number, nlines: number, bufferLength: numbe
  * @param bufferLength The length of the character buffer - 4096 by default.
  * @returns A buffer containing the lines that have been read.
  */
-export const readLastLines = (filePath: string, nlines: number, bufferLength: number = 4096) => {
+export function readLastLines(filePath: string, nlines: number, bufferLength: number = 4096): Buffer {
   const fp = handlePath(1, filePath)
   if (!fs.existsSync(fp))
     throw new Error(`File '${fp}' doesn't exist :(`)
   const fd = fs.openSync(fp, "r")
   const fileSize = fs.statSync(fp).size
-	return __rll(fd, fileSize, nlines, bufferLength)
+  return __rll(fd, fileSize, nlines, bufferLength)
+}
+
+export async function readLastLinesFromHandle(fileHandle: fs.promises.FileHandle, nlines: number, bufferLength: number = 4096): Promise<Buffer> {
+  const fd = fileHandle.fd
+  const fileSize = (await fileHandle.stat()).size
+  return __rll(fd, fileSize, nlines, bufferLength)
 }
 
 /**
@@ -147,8 +151,8 @@ export const readLastLines = (filePath: string, nlines: number, bufferLength: nu
  * @returns An encoded string containing the lines that have been read.
  */
 export const readLastLinesEnc = (encoding: BufferEncoding) => (
-	filePath: string, nlines: number, bufferLength: number = 4096
-) => {
+  filePath: string, nlines: number, bufferLength: number = 4096
+): string => {
   const fp = handlePath(1, filePath)
-	return readLastLines(fp, nlines, bufferLength).toString(encoding)
+  return readLastLines(fp, nlines, bufferLength).toString(encoding)
 }
